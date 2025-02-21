@@ -14,6 +14,7 @@ export default function useCount(): Count {
     };
 
     const decrement = () => {
+        if(count === 0) return;
         setCount(prevCount => prevCount - 1);
     };
 

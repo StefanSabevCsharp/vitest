@@ -6,8 +6,8 @@ export default function Counter() {
   return (
     <div>
       <h1>Counter</h1>
-      <p>{count}</p>
-      <button onClick={increment}>Increment</button>
+      <p data-testid="counter">{count}</p>
+      <button onClick={increment} style={{marginRight : "2em"}}>Increment</button>
       <button onClick={decrement}>Decrement</button>
     </div>
     

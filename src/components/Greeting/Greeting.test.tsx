@@ -9,4 +9,9 @@ describe("Greeting", () => {
     render(<Greeting />)
     expect(screen.getByText("Hello, World!")).toBeInTheDocument();
    });
+
+   it("renders a greeting with a name" , () => {
+    render(<Greeting name={"John"} />)
+    expect(screen.getByText("Hello, John!")).toBeInTheDocument();
+   })
 })

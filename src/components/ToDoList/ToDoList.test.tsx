@@ -5,15 +5,15 @@ import { expect } from "playwright/test";
 let browser: Browser;
 let page: Page;
 
-describe("ToDoList tests",{timeout: 20000} ,() => {
+describe("ToDoList tests", { timeout: 20000 }, () => {
     beforeEach(async () => {
-        browser = await chromium.launch({headless:false , slowMo: 3000});
+        browser = await chromium.launch();
         page = await browser.newPage();
         await page.goto("http://localhost:5173")
     });
     afterEach(async () => {
-        page.close();
-        browser.close();
+        await page.close();
+        await browser.close();
     })
 
     it("Ensure if component is loaded", async () => {
@@ -30,13 +30,29 @@ describe("ToDoList tests",{timeout: 20000} ,() => {
         const firstToDoItem = page.locator(`[data-testid="todo-item-0"]`);
         const firstToDoText = await firstToDoItem.textContent();
         console.log(firstToDoText)
-        expect(firstToDoText).toBe("typing");
-        
+        expect(firstToDoText).toContain("typing")
+
         await inputField.type("asd");
         await addButton.click()
-        const secondToDoItem = page.locator(`[data-testid="todo-item-1"]`)
+        const secondToDoItem = await page.locator(`[data-testid="todo-item-1"]`)
         const secondToDoItemText = await secondToDoItem.textContent();
-        expect(secondToDoItemText).toBe("asd")
-        
+        expect(secondToDoItemText).toContain("asd")
+
     })
+
+
+    it("should use delete button", async () => {
+        const inputField = await page.locator(`[data-testid="todo-input"]`);
+        await inputField.type("newTodo");
+        const addButton = await page.locator(`[data-testid="add-todo-button"]`);
+        await addButton.click();
+
+        const firstToDoItem = page.locator(`[data-testid="todo-item-0"]`);
+        await expect(firstToDoItem).toBeVisible();
+
+        const deleteButton = await page.locator(`[data-testid="delete-btn-0"]`);
+        await deleteButton.click();
+
+        await expect(firstToDoItem).not.toBeVisible();
+    });
 })

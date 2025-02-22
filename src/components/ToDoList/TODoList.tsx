@@ -12,6 +12,10 @@ export default function ToDoList(){
     }
   };
 
+  const handleDelete = (index : number) => {
+    setTodos(todos.filter((_,i) => i !== index))
+  }
+
   return (
     <div>
       <h1>Todo List</h1>
@@ -32,6 +36,12 @@ export default function ToDoList(){
         {todos.map((todo, index) => (
           <li key={index} data-testid={`todo-item-${index}`}>
             {todo}
+            <button data-testid={`delete-btn-${index}`} onClick={() => {
+                handleDelete(index);
+            }}>
+                Delete
+
+            </button>
           </li>
         ))}
       </ul>
